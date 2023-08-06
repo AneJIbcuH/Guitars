@@ -278,6 +278,7 @@ class UI {
         this.setSlider();
         // Set year
         this.setYear();
+        this.checkEmptyCart()
     }
 
     setMenuToggle () {
