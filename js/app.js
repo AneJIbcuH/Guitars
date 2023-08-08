@@ -132,6 +132,7 @@ class UI {
                 this.checkEmptyCart();
                 this.addCartItem(cartItem);    
                 this.addBasket(cartItem);
+                this.sliderBasket()
                 this.defineCartTotal();
                 Storage.saveCartItems(cartItems);
                 cartOverlay.classList.add('show');
@@ -147,6 +148,7 @@ class UI {
         });
         this.checkEmptyCart();
         this.defineCartTotal();
+        this.sliderBasket()
     }
 
     checkEmptyCart () {
@@ -162,6 +164,26 @@ class UI {
             basketId.style.display = ''
         }
     } 
+
+    sliderBasket () {
+        const leftSliderBtn = document.querySelector('.basket-btn-left')
+        const rightSliderBtn = document.querySelector('.basket-btn-right')
+        const basketGuitars = document.querySelectorAll('.product_basket')
+        let slideStep = 0
+                // Set slides positiones
+        basketGuitars.forEach((slide, index) => slide.style.left = `${index * 100}%`)
+                // Slider buttons listeners 
+        rightSliderBtn.addEventListener('click', () => {
+        slideStep++
+        if (slideStep > Math.ceil(basketGuitars.length / 3) - 1) slideStep = 0
+        basketGuitars.forEach(slide => slide.style.transform = `translateX(-${slideStep * 333.5}%)`)
+        }) 
+        leftSliderBtn.addEventListener('click', () => {
+        slideStep--
+        if (slideStep < 0) slideStep = Math.ceil(basketGuitars.length / 3) - 1
+        basketGuitars.forEach(slide => slide.style.transform = `translateX(-${slideStep * 333.5}%)`)
+        })
+    }
 
     addCartItem (cartItem) {
         const article = document.createElement('article');
@@ -201,6 +223,7 @@ class UI {
         this.checkEmptyCart();
         this.defineCartTotal();
         this.restoreProductBtn(id);
+        this.sliderBasket()
         Storage.saveCartItems(cartItems);
     }
 
@@ -230,6 +253,7 @@ class UI {
             basketItem.remove()
             button.parentElement.parentElement.remove();
             this.removeCartItem(button.dataset.id);
+            this.sliderBasket()
         }
         if (event.target.closest('.cart-item-increase-btn')) {
             const button = event.target.closest('.cart-item-increase-btn');
@@ -249,6 +273,7 @@ class UI {
                 basketItem.remove()
                 button.parentElement.parentElement.remove();
                 this.removeCartItem(button.dataset.id);
+                this.sliderBasket()
                 return;                
             }             
             button.previousElementSibling.textContent = cartItem.amount;
@@ -429,7 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
     product.getProducts().then(products => {
         ui.displayFilterBtns(products);
         ui.displayProducts(products);
-        // ui.addBasket(products)
         ui.displayCart();
         ui.setFilterBtns();
         ui.setProductsBtns(products);
