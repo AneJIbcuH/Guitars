@@ -803,13 +803,6 @@ h1 {
     letter-spacing: var(--low-spacing);
 }
 
-.basket-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    max-width: 1000px;
-}
-
 #basket {
     display: flex;
     justify-content: center;
@@ -819,7 +812,13 @@ h1 {
 .product_basket {
     width: 270px;
     height: 270px;
-    margin: 20px;
+    margin-right: 30px;
+    box-sizing: border-box;
+    transition: var(--ease-transition-2);
+}
+
+.product_basket h4 {
+    margin: 5px 0;
 }
 
 .basket_slider {
@@ -839,5 +838,13 @@ h1 {
 .btn-slider:hover {
     color: #ea2020;
     background: #a1a1a1;
+}
+
+.basket-container {
+    display: flex;
+    /* border: solid black; */
+    width: 875px;
+    height: 325px;
+    overflow: hidden;
 }
   
