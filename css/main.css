@@ -833,7 +833,7 @@ h1 {
     cursor: pointer;
     transition: var(--ease-transition);
     background-color: inherit;
-    color: var(--main-white);
+    color: var(--main-red);
 }
 
 .btn-slider:hover {
@@ -841,16 +841,15 @@ h1 {
 }
 
 .basket-btn-left {
-    transform: translate(40px);
+    transform: translate(-40px);
 }
 
 .basket-btn-right {
-    transform: translate(-40px);
+    transform: translate(40px);
 }
 
 .basket-container {
     display: flex;
-    border: 3px solid var(--main-red);
     width: 875px;
     height: 325px;
     overflow: hidden;
