@@ -827,24 +827,31 @@ h1 {
 }
 
 .btn-slider {
-    width: 70px;
-    height: 70px;
-    border-radius: 15%;
     border: none;
-    background: #4e2626;
-    color: aquamarine;
+    opacity: 0.5;
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: var(--ease-transition);
+    background-color: inherit;
+    color: var(--main-white);
 }
 
 .btn-slider:hover {
-    color: #ea2020;
-    background: #a1a1a1;
+    opacity: 1;
+}
+
+.basket-btn-left {
+    transform: translate(40px);
+}
+
+.basket-btn-right {
+    transform: translate(-40px);
 }
 
 .basket-container {
     display: flex;
-    /* border: solid black; */
+    border: 3px solid var(--main-red);
     width: 875px;
     height: 325px;
     overflow: hidden;
 }
-  
