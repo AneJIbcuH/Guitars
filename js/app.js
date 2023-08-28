@@ -132,7 +132,7 @@ class UI {
                 this.checkEmptyCart();
                 this.addCartItem(cartItem);    
                 this.addBasket(cartItem);
-                this.sliderBasket()
+                this.setSlider()
                 this.defineCartTotal();
                 Storage.saveCartItems(cartItems);
                 cartOverlay.classList.add('show');
@@ -148,7 +148,7 @@ class UI {
         });
         this.checkEmptyCart();
         this.defineCartTotal();
-        this.sliderBasket()
+        this.setSlider()
     }
 
     checkEmptyCart () {
@@ -164,26 +164,6 @@ class UI {
             basketId.style.display = ''
         }
     } 
-
-    sliderBasket () {
-        const leftSliderBtn = document.querySelector('.basket-btn-left')
-        const rightSliderBtn = document.querySelector('.basket-btn-right')
-        const basketGuitars = document.querySelectorAll('.product_basket')
-        let slideStep = 0
-                // Set slides positiones
-        basketGuitars.forEach((slide, index) => slide.style.left = `${index * 100}%`)
-                // Slider buttons listeners 
-        rightSliderBtn.addEventListener('click', () => {
-        slideStep++
-        if (slideStep > Math.ceil(basketGuitars.length / 3) - 1) slideStep = 0
-        basketGuitars.forEach(slide => slide.style.transform = `translateX(-${slideStep * 333.5}%)`)
-        }) 
-        leftSliderBtn.addEventListener('click', () => {
-        slideStep--
-        if (slideStep < 0) slideStep = Math.ceil(basketGuitars.length / 3) - 1
-        basketGuitars.forEach(slide => slide.style.transform = `translateX(-${slideStep * 333.5}%)`)
-        })
-    }
 
     addCartItem (cartItem) {
         const article = document.createElement('article');
@@ -223,7 +203,7 @@ class UI {
         this.checkEmptyCart();
         this.defineCartTotal();
         this.restoreProductBtn(id);
-        this.sliderBasket()
+        this.setSlider()
         Storage.saveCartItems(cartItems);
     }
 
@@ -253,7 +233,7 @@ class UI {
             basketItem.remove()
             button.parentElement.parentElement.remove();
             this.removeCartItem(button.dataset.id);
-            this.sliderBasket()
+            this.setSlider()
         }
         if (event.target.closest('.cart-item-increase-btn')) {
             const button = event.target.closest('.cart-item-increase-btn');
@@ -273,7 +253,7 @@ class UI {
                 basketItem.remove()
                 button.parentElement.parentElement.remove();
                 this.removeCartItem(button.dataset.id);
-                this.sliderBasket()
+                this.setSlider()
                 return;                
             }             
             button.previousElementSibling.textContent = cartItem.amount;
@@ -401,26 +381,40 @@ class UI {
             if (index === step) image.style.opacity = '1';
             else image.style.opacity = '';
         });
-    }    
+    }   
 
     setSlider () {
         const leftSliderBtn = document.querySelector('.left-slider-btn');
         const rightSliderBtn = document.querySelector('.right-slider-btn');
         const slides = document.querySelectorAll('.slide');
+        const leftSliderBtnBasket = document.querySelector('.basket-btn-left')
+        const rightSliderBtnBasket = document.querySelector('.basket-btn-right')
+        const basketGuitars = document.querySelectorAll('.product_basket')
         let slideStep = 0;
         // Set slides positiones
-        slides.forEach((slide, index) => slide.style.left = `${index * 100}%`);
-        // Slider buttons listeners 
-        rightSliderBtn.addEventListener('click', () => {
+        function right(x, y, array) {
             slideStep++;
-            if (slideStep > slides.length - 1) slideStep = 0;
-            slides.forEach(slide => slide.style.transform = `translateX(-${slideStep * 100}%)`);
-        });
-        leftSliderBtn.addEventListener('click', () => {
+            if (slideStep > Math.ceil(array.length / x) - 1) slideStep = 0;
+            array.forEach(slide => slide.style.transform = `translateX(-${slideStep * 100 * y}%)`);
+        }
+        
+        function left(x, y, array) {
             slideStep--;
-            if (slideStep < 0) slideStep = slides.length - 1;
-            slides.forEach(slide => slide.style.transform = `translateX(-${slideStep * 100}%)`);
-        });        
+            if (slideStep < 0) slideStep = Math.ceil(array.length / x) - 1;
+            array.forEach(slide => slide.style.transform = `translateX(-${slideStep * 100 * y}%)`);
+        }
+        
+        function slidesReady(slide, index) {
+            slide.style.left = `${index * 100}%`
+        }
+
+        slides.forEach(slidesReady);
+        basketGuitars.forEach(slidesReady);
+        // Slider buttons listeners 
+        rightSliderBtn.addEventListener('click', () => right(1, 1, slides));
+        leftSliderBtn.addEventListener('click', () => left(1, 1, slides));    
+        rightSliderBtnBasket.addEventListener('click', () => right(3, 3.335, basketGuitars));   
+        leftSliderBtnBasket.addEventListener('click', () => left(1, 3.335, basketGuitars));   
     }
 
     setYear () {
